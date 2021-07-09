@@ -20,6 +20,10 @@ export const getProducts = asyncHandler(async (req, res) => {
     res.status(202).json({products})
 })
 
+/*
+* Fetch product details
+* GET /api/products/:id
+*/
 export const getProductById = asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id)
 

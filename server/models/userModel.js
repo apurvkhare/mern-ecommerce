@@ -9,6 +9,7 @@ const userSchema = mongoose.Schema({
     email: {
         type: String,
         required: true,
+        lowercase: true,
         unique: true
     },
     password: {
@@ -22,10 +23,10 @@ const userSchema = mongoose.Schema({
     }
 })
 
-userSchema.pre('save', async () => {
-    const salt = await bcrypt.genSalt(7)
-    this.password = await bcrypt.hash(this.password, salt)
-})
+// userSchema.pre('save', async () => {
+//     const salt = await bcrypt.genSalt(7)
+//     this.password = await bcrypt.hash(this.password, salt)
+// })
 
 const User = mongoose.model('User', userSchema)
 
