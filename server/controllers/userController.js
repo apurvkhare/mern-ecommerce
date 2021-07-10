@@ -1,7 +1,7 @@
 import asyncHandler from 'express-async-handler'
 import createError from 'http-errors'
 import User from '../models/userModel.js'
-import { authSchema } from '../lib/schemaValidation.js'
+import { authRegisterSchema, authLoginSchema } from '../lib/schemaValidation.js'
 import { signAccessToken } from '../lib/jwt.js'
 
 /*
@@ -10,16 +10,15 @@ import { signAccessToken } from '../lib/jwt.js'
 */
 export const registerUser = asyncHandler(async (req, res, next) => {
     try{
-      const {name, email, password, phoneNumber} = await authSchema.validateAsync(req.body)
+      const {name, email, password, phoneNumber} = await authRegisterSchema.validateAsync(req.body)
 
       const doesExist = await User.findOne({ email })
       if (doesExist)
         throw createError.Conflict(`${email} is already been registered`)
 
-      const user = new User({name, email, password})
+      const user = new User({name, email, password, phoneNumber})
       const savedUser = await user.save()
       const accessToken = await signAccessToken(savedUser.id)
-    //   const refreshToken = await signRefreshToken(savedUser.id)
 
       res.send({ accessToken })
     }catch(err){
@@ -35,16 +34,28 @@ export const registerUser = asyncHandler(async (req, res, next) => {
 * Login a user
 * POST /api/auth/login
 */
-export const loginUser = asyncHandler(async (req, res) => {
-    res.send("Login Route")
-})
+export const loginUser = asyncHandler(async (req, res, next) => {
+  try{
+    const { email, password } = await authLoginSchema.validateAsync(req.body)
 
-/*
-* Refresh Token
-* POST /api/auth/refresh-token
-*/
-export const refreshToken = asyncHandler(async (req, res) => {
-    res.send("Refresh Token Route")
+    const user = await User.findOne({ email })
+    if (!user)
+      throw createError.NotFound(`User is not registerd`)
+    
+    const isPasswordValid = await user.verifyPassword(password) 
+    if(!isPasswordValid)
+      throw createError.Unauthorized('Invalid email or password')
+
+    const accessToken = await signAccessToken(user.id)
+
+    res.send({ accessToken })
+  }catch(err){
+      if(err.isJoi === true) {
+          return next(createError.BadRequest('Invalid email or password'))
+      }
+      console.error("Error Registering User: ", err)
+      next(error)
+  }
 })
 
 /*

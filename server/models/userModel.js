@@ -23,10 +23,24 @@ const userSchema = mongoose.Schema({
     }
 })
 
-// userSchema.pre('save', async () => {
-//     const salt = await bcrypt.genSalt(7)
-//     this.password = await bcrypt.hash(this.password, salt)
-// })
+userSchema.pre('save', async function(next){
+    try{
+        const salt = await bcrypt.genSalt(7)
+        this.password = await bcrypt.hash(this.password, salt)
+        next()
+    } catch(error) {
+        next(error)
+    }
+})
+
+userSchema.methods.verifyPassword = async function (password){
+    try {
+        return await bcrypt.compare(password, this.password)
+    } catch (error) {
+        console.error("Error verifiying the password: ", error)
+        throw error
+    }
+}
 
 const User = mongoose.model('User', userSchema)
 
