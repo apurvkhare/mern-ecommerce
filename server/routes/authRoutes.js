@@ -3,7 +3,6 @@ import {
     registerUser,
     loginUser,
     logoutUser,
-    refreshToken,
 } from '../controllers/userController.js'
 
 const router = express.Router()

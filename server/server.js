@@ -7,6 +7,7 @@ import orderRouter from './routes/orderRoute.js'
 import checkoutRouter from './routes/checkoutRoute.js'
 import morgan from 'morgan'
 import createError from 'http-errors'
+import cors from 'cors'
 import { verifyAccessToken } from './lib/jwt.js'
 
 dotenv.config()
@@ -14,6 +15,7 @@ dotenv.config()
 connectDB()
 
 const app = express()
+app.use(cors())
 
 app.use(morgan('dev'))
 app.use(express.json())
