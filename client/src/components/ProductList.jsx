@@ -70,6 +70,7 @@ const ProductList = () => {
                         name={product.productName}
                         price={product.price}
                         imageUrl={product.image}
+                        productId={product.productId}
                     />
                 ))}
         </StyledProductList>

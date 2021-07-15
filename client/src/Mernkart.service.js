@@ -19,3 +19,25 @@ export const getAllProducts = async () => {
         return null
     }
 }
+
+export const getProductDetails = async productId => {
+    try {
+        const response = await axios.get(`http://localhost:5000/api/products/${productId}`)
+
+        const data = response.data
+
+        const product = {
+            productId: data._id,
+            productName: data.name,
+            price: data.price,
+            qty: data.qty,
+            image: data.image,
+            description: data.description
+        }
+
+        return product
+    } catch (error) {
+        console.error('Error fetching Product Details: ', error)
+        return null
+    }
+}

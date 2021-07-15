@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router'
 import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -9,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import ShareIcon from '@material-ui/icons/Share'
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart'
+import { useApp } from '../context/AppContext'
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -28,16 +30,23 @@ const useStyles = makeStyles(() => ({
 }))
 
 const Product = ({
-    name = 'IPhone 12',
-    price = '84000',
-    imageUrl = 'https://picsum.photos/200/300',
+    name,
+    price,
+    imageUrl,
     productId,
 }) => {
     const classes = useStyles()
 
-    const handleAddToCart = () => {}
+    const history = useHistory()
 
-    const handleClick = () => {}
+    const { setIsPromptOpen } = useApp()
+
+    const handleAddToCart = (e) => {
+        e.stopPropagation()
+        setIsPromptOpen(true)
+    }
+
+    const handleClick = () => {history.push(`/product/${productId}`)}
 
     return (
         <>

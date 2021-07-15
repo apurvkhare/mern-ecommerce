@@ -2,6 +2,7 @@ import { IconButton } from '@material-ui/core'
 import { AccountCircleOutlined, ShoppingCartOutlined } from '@material-ui/icons'
 import React from 'react'
 import styled from 'styled-components'
+import { useApp } from '../context/AppContext'
 
 const StyledAppBar = styled.div`
     display: flex;
@@ -29,12 +30,18 @@ const StyledIconContainer = styled.div`
 `
 
 const AppBar = () => {
+    
+    const { setIsPromptOpen } = useApp()
+
+    const handleRedirectToCart = () => {
+        setIsPromptOpen(true)
+    }
     return (
         <StyledAppBar>
             <AppName>Mernkart</AppName>
             <SearchBar type='search' placeholder='Enter Product Name' />
             <StyledIconContainer>
-                <IconButton>
+                <IconButton onClick={handleRedirectToCart}>
                     <ShoppingCartOutlined />
                 </IconButton>
                 <IconButton>
