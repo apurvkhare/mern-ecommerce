@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export const getAllProducts = async () => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/products`)
+        const response = await axios.get(`/api/products`)
 
         const products = response?.data?.products?.map(product => ({
             productId: product._id,
@@ -10,7 +10,7 @@ export const getAllProducts = async () => {
             price: product.price,
             qty: product.qty,
             image: product.image,
-            description: product.description
+            description: product.description,
         }))
 
         return products
@@ -22,7 +22,7 @@ export const getAllProducts = async () => {
 
 export const getProductDetails = async productId => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/products/${productId}`)
+        const response = await axios.get(`/api/products/${productId}`)
 
         const data = response.data
 
@@ -32,12 +32,65 @@ export const getProductDetails = async productId => {
             price: data.price,
             qty: data.qty,
             image: data.image,
-            description: data.description
+            description: data.description,
         }
 
         return product
     } catch (error) {
         console.error('Error fetching Product Details: ', error)
+        return null
+    }
+}
+
+export const loginUser = async (email, password) => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }
+
+        const response = await axios.post(
+            `/api/auth/login`,
+            { email, password },
+            config
+        )
+
+        const userData = response.data
+
+        return userData
+    } catch (error) {
+        console.error('Error Logging in the User: ', error)
+        return null
+    }
+}
+
+export const checkout = async (
+    userId,
+    orderItems,
+    shippingAddress,
+    paymentMethod,
+    totalPrice
+) => {
+    try {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+        }
+
+        const response = await axios.post(
+            `/api/checkout`,
+            { userId, orderItems, shippingAddress, paymentMethod, totalPrice },
+            config
+        )
+
+        const userData = response.data
+
+        return userData
+    } catch (error) {
+        console.error('Error Logging in the User: ', error)
         return null
     }
 }

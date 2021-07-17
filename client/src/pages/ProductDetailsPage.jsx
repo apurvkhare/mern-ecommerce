@@ -57,11 +57,22 @@ const ProductDetailsPage = () => {
     const { data: product, fetching, error } = state
 
     const { productId } = useParams()
-
     
-    const { setIsPromptOpen } = useApp()
+    const { setIsPromptOpen, setIsSnackbarOpen, setSnackbarMessage, addToCart } = useApp()
 
     const handleAddToCart = () => {
+        if(localStorage.getItem('token')){
+            const productData = {
+                productId: product.productId,
+                productName: product.productName,
+                price: product.price,
+                qty: 1
+            }
+            addToCart(productData)
+            setSnackbarMessage('Product added to cart')
+            setIsSnackbarOpen(true)
+            return
+        }
         setIsPromptOpen(true)
     }
 

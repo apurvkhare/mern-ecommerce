@@ -4,7 +4,12 @@ import LoginPrompt from './components/LoginPrompt'
 import { AppProvider } from './context/AppContext'
 import HomePage from './pages/HomePage'
 import ProductDetailsPage from './pages/ProductDetailsPage'
-import Login from './components/Login'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
+import SnackbarAlert from './components/SnackbarAlert'
+import CartPage from './pages/CartPage'
+import CheckoutPage from './pages/CheckoutPage'
+import OrdersPage from './pages/OrdersPage'
 
 function MernkartApp() {
     return (
@@ -18,20 +23,24 @@ function MernkartApp() {
                         <ProductDetailsPage />
                     </Route>
                     <Route exact path='/login'>
-                        <Login />
+                        <LoginPage />
+                    </Route>
+                    <Route exact path='/register'>
+                        <RegisterPage />
+                    </Route>
+                    <Route exact path='/cart'>
+                        <CartPage />
+                    </Route>
+                    <Route exact path='/checkout'>
+                        <CheckoutPage />
+                    </Route>
+                    <Route exact path='/orders'>
+                        <OrdersPage />
                     </Route>
                 </Switch>
                 <LoginPrompt />
+                <SnackbarAlert />
             </AppProvider>
-            {/*
-        Home
-        Login
-        SignUp
-        ProductDetails
-        Cart
-        Checkout
-        Orders 
-       */}
         </Router>
     )
 }

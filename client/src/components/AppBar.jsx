@@ -2,6 +2,7 @@ import { IconButton } from '@material-ui/core'
 import { AccountCircleOutlined, ShoppingCartOutlined } from '@material-ui/icons'
 import React from 'react'
 import styled from 'styled-components'
+import { useHistory } from 'react-router'
 import { useApp } from '../context/AppContext'
 
 const StyledAppBar = styled.div`
@@ -33,7 +34,13 @@ const AppBar = () => {
     
     const { setIsPromptOpen } = useApp()
 
+    const history = useHistory()
+
     const handleRedirectToCart = () => {
+        if(localStorage.getItem('token')){
+            history.push('/cart')
+            return
+        }
         setIsPromptOpen(true)
     }
     return (

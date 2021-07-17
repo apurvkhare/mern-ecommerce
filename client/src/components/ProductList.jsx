@@ -18,8 +18,6 @@ const ProductList = () => {
 
     const { data: products, fetching, error } = state
 
-    // console.log("Character Details Comp: ", characterDetails)
-
     const fetchData = async () => {
         dispatch({
             type: ACTION_TYPES.FETCH_DATA_INTITATE,

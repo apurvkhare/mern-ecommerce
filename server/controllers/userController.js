@@ -48,7 +48,7 @@ export const loginUser = asyncHandler(async (req, res, next) => {
 
     const accessToken = await signAccessToken(user.id)
 
-    res.send({ accessToken })
+    res.send({ accessToken, customerId: user.id, customerName: user.name })
   }catch(err){
       if(err.isJoi === true) {
           return next(createError.BadRequest('Invalid email or password'))
