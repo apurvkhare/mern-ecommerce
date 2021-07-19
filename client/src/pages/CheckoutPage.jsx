@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
 import { useApp } from '../context/AppContext'
+import displayRazorpay from '../lib/razorpay'
 import { checkout } from '../Mernkart.service'
 
 const StyledCheckoutContainer = styled.div`
@@ -37,7 +38,7 @@ const CheckoutPage = () => {
 
     const { customer, setIsSnackbarOpen, setSnackbarMessage, cart } = useApp()
 
-    const handleProceedToPay = () => {
+    const handleProceedToPay = async () => {
         if([address, city, pincode, state, paymentMethod].includes('')){
             setSnackbarMessage('Please enter valid address details')
             setIsSnackbarOpen(true)
@@ -51,7 +52,8 @@ const CheckoutPage = () => {
             state
         }
         const totalPrice = cart.reduce((amount, cartItem) => amount += cartItem.price * cartItem.qty, 0)
-        checkout(userId, cart, shippingAddress, paymentMethod, totalPrice)
+        const userData = await checkout(userId, cart, shippingAddress, paymentMethod, totalPrice)
+        displayRazorpay(userData, customer.customerName)
     }
 
     return (
@@ -63,6 +65,7 @@ const CheckoutPage = () => {
             <StyledInput type="text" placeholder="City" value={city} onChange={e => setCity(e.target.value)}/>
             <StyledInput type="text" placeholder="Pincode" value={pincode} onChange={e => setPincode(e.target.value)}/>
             <StyledInput type="text" placeholder="State" value={state} onChange={e => setState(e.target.value)}/>
+            <h3>Total Amount: {cart.reduce((amount, cartItem) => amount += cartItem.price * cartItem.qty, 0)}</h3>
             <h3>Preferred Payment method</h3>
             <select onChange={e => setPaymentMethod(e.target.value)} value={paymentMethod}>
                 <option value="Credit Card">Credit card</option>

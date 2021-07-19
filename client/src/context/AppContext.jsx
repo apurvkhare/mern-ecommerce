@@ -18,6 +18,7 @@ export const useApp = () => {
 
 export const AppProvider = ({ children }) => {
     const [isPromptOpen, setIsPromptOpen] = React.useState(false)
+    const [isAccountOpen, setIsAccountOpen] = React.useState(false)
     const [isSnackbarOpen, setIsSnackbarOpen] = React.useState(false)
     const [snackbarMessage, setSnackbarMessage] = React.useState('')
     const [state, dispatch] = React.useReducer(
@@ -47,11 +48,13 @@ export const AppProvider = ({ children }) => {
 
     const value = {
         isPromptOpen,
+        isAccountOpen,
         isSnackbarOpen,
         snackbarMessage,
         cart,
         customer,
         setIsPromptOpen,
+        setIsAccountOpen,
         setIsSnackbarOpen,
         setSnackbarMessage,
         addToCart,

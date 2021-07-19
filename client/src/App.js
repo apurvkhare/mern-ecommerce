@@ -10,6 +10,9 @@ import SnackbarAlert from './components/SnackbarAlert'
 import CartPage from './pages/CartPage'
 import CheckoutPage from './pages/CheckoutPage'
 import OrdersPage from './pages/OrdersPage'
+import OrderSuccessPage from './pages/OrderSuccessPage'
+import AccountPrompt from './components/AccountPrompt'
+import PrivateRoute from './components/PrivateRoute'
 
 function MernkartApp() {
     return (
@@ -28,17 +31,13 @@ function MernkartApp() {
                     <Route exact path='/register'>
                         <RegisterPage />
                     </Route>
-                    <Route exact path='/cart'>
-                        <CartPage />
-                    </Route>
-                    <Route exact path='/checkout'>
-                        <CheckoutPage />
-                    </Route>
-                    <Route exact path='/orders'>
-                        <OrdersPage />
-                    </Route>
+                    <PrivateRoute exact path='/cart' component={CartPage}/>
+                    <PrivateRoute exact path='/checkout' component={CheckoutPage}/>
+                    <PrivateRoute exact path='/orders' component={OrdersPage}/>
+                    <PrivateRoute exact path='/payment/success' component={OrderSuccessPage}/>
                 </Switch>
                 <LoginPrompt />
+                <AccountPrompt />
                 <SnackbarAlert />
             </AppProvider>
         </Router>

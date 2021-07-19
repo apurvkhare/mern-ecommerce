@@ -32,7 +32,7 @@ const StyledIconContainer = styled.div`
 
 const AppBar = () => {
     
-    const { setIsPromptOpen } = useApp()
+    const { setIsPromptOpen, setIsAccountOpen } = useApp()
 
     const history = useHistory()
 
@@ -43,6 +43,15 @@ const AppBar = () => {
         }
         setIsPromptOpen(true)
     }
+
+    const handleAccount = () => {
+        if(localStorage.getItem('token')){
+            setIsAccountOpen(true)
+        }else{
+            setIsPromptOpen(true)
+        }
+    }
+
     return (
         <StyledAppBar>
             <AppName>Mernkart</AppName>
@@ -51,7 +60,7 @@ const AppBar = () => {
                 <IconButton onClick={handleRedirectToCart}>
                     <ShoppingCartOutlined />
                 </IconButton>
-                <IconButton>
+                <IconButton onClick={handleAccount}>
                     <AccountCircleOutlined />
                 </IconButton>
             </StyledIconContainer>
